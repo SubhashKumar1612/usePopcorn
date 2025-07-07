@@ -3,11 +3,17 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import StarRating from './component/StarRating/StarRating';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <App />
+    {/* <StarRating maxRating={5}/>
+    <StarRating maxRating={5} color={'red'} className="test"
+      message={['Terible','Bad','okay','good','amazing']}
+      defaultRating={3}
+    /> */}
   </React.StrictMode>
 );
 
