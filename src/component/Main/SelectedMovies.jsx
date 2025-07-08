@@ -63,19 +63,19 @@ function SelectedMovies({ selectedId ,onCloseMovie,KEY ,onAddWatched ,watched}) 
     
     useEffect(() => {
   function handleKeyDown(e) {
-     console.log("Key pressed:", e.code);
+     //console.log("Key pressed:", e.code);
     if (e.code === "Escape") {
-      console.log("Escape key pressed. Closing movie.");
+      //console.log("Escape key pressed. Closing movie.");
       onCloseMovie();
     }
   }
 
   document.addEventListener("keydown", handleKeyDown);
-  console.log("Escape key listener added");
+  //console.log("Escape key listener added");
 
   return () => {
     document.removeEventListener("keydown", handleKeyDown);
-    console.log("Escape key listener removed");
+    //console.log("Escape key listener removed");
   };
 }, [onCloseMovie]);
 
