@@ -1,6 +1,7 @@
-import {useEffect,useState} from 'react'
+import {useEffect,useState,useRef} from 'react'
 import StarRating from '../StarRating/StarRating';
 import Loader from '../Loader/Loader';
+import { useKey } from '../../useKey';
 const selectStyle = {
   color: "white",
   fontWeight: "bold"
@@ -9,10 +10,16 @@ const selectStyle = {
 function SelectedMovies({ selectedId ,onCloseMovie,KEY ,onAddWatched ,watched}) {
     const [movie,setMovie]=useState({});
     const [isLoading,setIsLoading]=useState(false);
-    const [userRating, setUserRating] = useState(0)
+    const [userRating, setUserRating] = useState(0);
     
-     const isWatched=watched.some(obj=>obj.imdbId===selectedId);
-     const watchedUserRating=watched.find(movie=>movie.imdbId===selectedId)?.userRating;
+    const countRef=useRef(0);
+
+    useEffect(function(){
+      if(userRating) countRef.current++;
+    },[userRating])
+    
+    const isWatched=watched.some(obj=>obj.imdbId===selectedId);
+    const watchedUserRating=watched.find(movie=>movie.imdbId===selectedId)?.userRating;
 
     const {
         Title:title,
@@ -36,6 +43,7 @@ function SelectedMovies({ selectedId ,onCloseMovie,KEY ,onAddWatched ,watched}) 
             imdbRating:Number(imdbRating),
             runtime:Number(runtime.split(" ").at(0)),
             userRating,
+            countRatingDecision:countRef.current,
         }
         onAddWatched(newWatchMovie);
         onCloseMovie();
@@ -61,23 +69,25 @@ function SelectedMovies({ selectedId ,onCloseMovie,KEY ,onAddWatched ,watched}) 
         }
     },[title])
     
-    useEffect(() => {
-  function handleKeyDown(e) {
-     //console.log("Key pressed:", e.code);
-    if (e.code === "Escape") {
-      //console.log("Escape key pressed. Closing movie.");
-      onCloseMovie();
-    }
-  }
+    useKey("Escape",onCloseMovie);
+    
+//     useEffect(() => {
+//   function handleKeyDown(e) {
+//      //console.log("Key pressed:", e.code);
+//     if (e.code === "Escape") {
+//       //console.log("Escape key pressed. Closing movie.");
+//       onCloseMovie();
+//     }
+//   }
 
-  document.addEventListener("keydown", handleKeyDown);
-  //console.log("Escape key listener added");
+//   document.addEventListener("keydown", handleKeyDown);
+//   //console.log("Escape key listener added");
 
-  return () => {
-    document.removeEventListener("keydown", handleKeyDown);
-    //console.log("Escape key listener removed");
-  };
-}, [onCloseMovie]);
+//   return () => {
+//     document.removeEventListener("keydown", handleKeyDown);
+//     //console.log("Escape key listener removed");
+//   };
+// }, [onCloseMovie]);
 
 
   return (
